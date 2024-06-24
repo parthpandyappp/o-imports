@@ -23,9 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`h-screen flex flex-col ${inter.className}`}>
+      <body className={`flex flex-col h-screen ${inter.className}`}>
         <Nav />
-        <main className="h-full grow p-2">{children}</main>
+        <main className="flex-grow overflow-y-auto p-2">{children}</main>
         <Footer />
       </body>
     </html>
