@@ -67,7 +67,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col p-8 md:p-12 h-full w-full overflow-auto">
-      <div className="mt-40 md:mt-36 w-full">
+      <div className="mt-20 md:mt-36 w-full">
         <LanguagesDropDownMenu onChangeLanguage={setSelectedLanguage} />
       </div>
       <div className="block md:flex flex-grow gap-4 items-center justify-center mt-6 h-full">
