@@ -45,7 +45,7 @@ export default function Home() {
         }
       })();
     }
-  }, [code]);
+  }, [code, selectedLanguage]);
 
   useEffect(() => {
     setCode("");

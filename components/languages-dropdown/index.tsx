@@ -41,7 +41,7 @@ export default function LanguagesDropDownMenu(
 
   useEffect(() => {
     onChangeLanguage(value);
-  }, [value]);
+  }, [value, onChangeLanguage]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
