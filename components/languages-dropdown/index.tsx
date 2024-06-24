@@ -50,7 +50,7 @@ export default function LanguagesDropDownMenu(
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full md:w-[200px] justify-between"
         >
           {value
             ? languages.find((language) => language.value === value)?.label
@@ -58,7 +58,7 @@ export default function LanguagesDropDownMenu(
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-full md:w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Search language..." />
           <CommandList>
