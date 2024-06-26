@@ -70,8 +70,8 @@ export default function Home() {
       <div className="mt-20 md:mt-36 w-full">
         <LanguagesDropDownMenu onChangeLanguage={setSelectedLanguage} />
       </div>
-      <div className="block md:flex flex-grow gap-4 items-center justify-center mt-6 h-full">
-        <div className="md:block w-full md:w-1/2 border rounded h-3/4 md:h-full md:max-lg:h-3/4 max-h-[362px] md:max-h-[600px] relative">
+      <div className="block md:flex grow-0 md:grow gap-4 items-center justify-center mt-6 h-full">
+        <section className="md:block w-full md:w-1/2 border rounded h-3/4 md:max-lg:h-3/4 max-h-[362px] md:max-h-[600px] relative">
           <div className="hidden md:block h-full">
             <TextAreaComponent
               code={code}
@@ -117,8 +117,8 @@ export default function Home() {
               <DisabledSection />
             </div>
           ) : null}
-        </div>
-        <section className="hidden md:block p-4 w-full md:w-1/2 border rounded h-full md:max-lg:h-3/4 max-h-[600px] overflow-auto relative">
+        </section>
+        <section className="hidden md:block w-full md:w-1/2 border rounded h-3/4 md:max-lg:h-3/4 max-h-[362px] md:max-h-[600px] relative overflow-auto p-4">
           {!loading ? (
             <CodeBlock
               organisedCode={organisedCode}
