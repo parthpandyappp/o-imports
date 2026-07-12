@@ -1,9 +1,11 @@
-// openai
-import OpenAI from "openai";
+// replicate
+import Replicate from "replicate";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN,
 });
+
+const MODEL = "meta/meta-llama-3-70b-instruct";
 
 export async function generateOrganisedImports(code: string, language: string) {
   const prompt = `
@@ -79,11 +81,41 @@ export async function generateOrganisedImports(code: string, language: string) {
   Return a single JSON object with a key "result" and the value as the single-line formatted string of the organized import code, including the whole remaining code unchanged, ensuring no part of the original code is omitted or replaced.
   `;
 
-  const chatCompletion = await openai.chat.completions.create({
-    messages: [{ role: "user", content: prompt }],
-    model: "gpt-3.5-turbo",
+  const output = await replicate.run(MODEL, {
+    input: {
+      prompt,
+      system_prompt:
+        "You are a helpful assistant that only ever responds with a single, valid JSON object. Do not include any prose, explanations, or markdown code fences around the JSON.",
+      max_tokens: 4096,
+      temperature: 0.2,
+    },
   });
 
-  console.log({ res: chatCompletion.choices[0].message });
-  return chatCompletion.choices[0].message.content;
+  // Language models on Replicate stream their output as an array of string
+  // chunks; join them into the full completion.
+  const content = Array.isArray(output) ? output.join("") : String(output);
+
+  // The model may occasionally wrap the JSON in markdown fences or add stray
+  // text, so extract the JSON object before returning it to the caller.
+  const jsonString = extractJson(content);
+
+  console.log({ res: jsonString });
+  return jsonString;
+}
+
+function extractJson(content: string): string {
+  const trimmed = content.trim();
+
+  // Strip markdown code fences if present (```json ... ``` or ``` ... ```).
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  const candidate = fenced ? fenced[1].trim() : trimmed;
+
+  // Fall back to the first {...} block in case of surrounding prose.
+  const start = candidate.indexOf("{");
+  const end = candidate.lastIndexOf("}");
+  if (start !== -1 && end !== -1 && end > start) {
+    return candidate.slice(start, end + 1);
+  }
+
+  return candidate;
 }
